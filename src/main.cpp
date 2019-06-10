@@ -452,14 +452,14 @@ void doInference(cv::Mat img, std::vector<Anchor>& faces)
 	});
 	for (auto &face : faces)
 	{
-		face.finalbox.width *= resize_scale;
-		face.finalbox.x *= resize_scale;
-		face.finalbox.height *= resize_scale;
-		face.finalbox.y *= resize_scale;
+		face.finalbox.width /= resize_scale;
+		face.finalbox.x /= resize_scale;
+		face.finalbox.height /= resize_scale;
+		face.finalbox.y /= resize_scale;
 		for (int i = 0; i < 5; ++i)
 		{
-			face.pts[i].x *= resize_scale;
-			face.pts[i].y *= resize_scale;
+			face.pts[i].x /= resize_scale;
+			face.pts[i].y /= resize_scale;
 		}
 	}
 
