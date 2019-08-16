@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 import src.c2oObject as Node
 ##-------------------------------------------------eltwise层----------------------------------------------------------##
 def createEltwise(layer, nodename, inname, outname, input_shape):

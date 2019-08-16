@@ -11,7 +11,6 @@ def loadcaffemodel(net_path,model_path):
     f = open(model_path, 'rb')
     model.ParseFromString(f.read())
     f.close()
-    print("1.caffe模型加载完成")
     return net,model
 
 def loadonnxmodel(onnx_path):
@@ -22,6 +21,5 @@ def saveonnxmodel(onnxmodel,onnx_save_path):
     try:
         onnx.checker.check_model(onnxmodel)
         onnx.save_model(onnxmodel, onnx_save_path+".onnx")
-        print("3.模型保存成功,已保存至"+onnx_save_path+".onnx")
     except Exception as e:
-        print("3.模型存在问题,未保存成功:\n",e)
+        pass

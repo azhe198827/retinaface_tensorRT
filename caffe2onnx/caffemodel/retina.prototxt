@@ -6,8 +6,8 @@ layer {
     shape {
       dim: 1
       dim: 3
-      dim: 640
-      dim: 640
+      dim: 200
+      dim: 200
     }
   }
 }
@@ -1350,7 +1350,7 @@ layer {
   name: "plus0"
   type: "Eltwise"
   bottom: "rf_c2_lateral_bn"
-  bottom: "crop0"
+  bottom: "rf_c3_upsampling"
   top: "plus0"
   eltwise_param {
     operation: SUM
@@ -1628,7 +1628,7 @@ layer {
   name: "plus1"
   type: "Eltwise"
   bottom: "rf_c1_red_conv_bn"
-  bottom: "crop1"
+  bottom: "rf_c2_upsampling"
   top: "plus1"
   eltwise_param {
     operation: SUM

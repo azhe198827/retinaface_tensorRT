@@ -16,7 +16,8 @@ op_pname={"Conv":["_W","_b"],
           "Reshape":["_shape"],
           "InnerProduct":["_W","_B"],
           "Upsample":["_Scale"],
-          "PRelu":["_slope"]
+          "PRelu":["_slope"],
+          "ConvTranspose":["_W","_b"]
           }
 op_ptype={"Conv":[TensorProto.FLOAT,TensorProto.FLOAT],
           "BatchNorm":[TensorProto.FLOAT,TensorProto.FLOAT],
@@ -24,5 +25,6 @@ op_ptype={"Conv":[TensorProto.FLOAT,TensorProto.FLOAT],
           "Reshape":[TensorProto.INT64],
           "InnerProduct":[TensorProto.FLOAT,TensorProto.FLOAT],
           "Upsample":[TensorProto.FLOAT],
-          "PRelu":[TensorProto.FLOAT]
+          "PRelu":[TensorProto.FLOAT],
+          "ConvTranspose":[TensorProto.FLOAT,TensorProto.FLOAT]
           }

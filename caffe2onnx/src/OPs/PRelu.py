@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 import src.c2oObject as Node
 ##---------------------------------------------PRelu层------------------------------------------------------------##
 def getPReluOutShape(input_shape):

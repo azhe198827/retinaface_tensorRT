@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 import argparse
 from src.load_save_model import *
 from src.caffe2onnx import *
@@ -19,7 +20,7 @@ def main():
     c2o = Caffe2Onnx(net,model,OnnxName)
     onnxmodel = c2o.createOnnxModel()
     saveonnxmodel(onnxmodel,OnnxSavePath+OnnxName)
-
+    print("over")
 
 if __name__ == '__main__':
     main()

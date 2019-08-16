@@ -1,9 +1,14 @@
 # -*- coding: UTF-8 -*-
 import numpy as np
 import src.c2oObject as Node
-##---------------------------------------------------Conv层-------------------------------------------------------##
+##---------------------------------------------------ConvTranspose层-------------------------------------------------------##
 #获取超参数
-def getConvAttri(layer):
+def getConvTransposeAttri(layer):
+    ##膨胀系数dilations
+    dilations = [1, 1]
+    if layer.convolution_param.dilation != []:
+        dilation = layer.convolution_param.dilation[0]
+        dilations = [dilation, dilation]
     ##填充pads
     pads = [0, 0, 0, 0]  # 默认为0
     if layer.convolution_param.pad != []:  # 若存在pad,则根据pad赋值
@@ -25,7 +30,7 @@ def getConvAttri(layer):
 
     # 超参数字典
     dict = {  # "auto_pad":"NOTSET",
-        "dilations": [1, 1, 1],
+        "dilations": dilations,
         "group": group,
         "kernel_shape": kernel_shape,
         "pads": pads,
@@ -33,31 +38,28 @@ def getConvAttri(layer):
     }
     return dict
 #计算输出维度
-def getConvOutShape(input_shape,layer,dict):
+def getConvTransposeOutShape(input_shape, layer,dict):
+    dilations = dict["dilations"]
     kernel_shape = dict["kernel_shape"]
     pads = dict["pads"]
     strides = dict["strides"]
     ##卷积核数量kernel_num
     kernel_num = layer.convolution_param.num_output
 
-    #计算输入维度output_shape
-    h = (input_shape[0][2] - kernel_shape[0] + 2 * pads[0])/strides[0] + 1 # 输出维度N= ((输入维度I - 卷积核维度K + 2 * 填充P)/步长S) + 1
-    w = (input_shape[0][3] - kernel_shape[1] + 2 * pads[0]) / strides[0] + 1
-    #当h非整数 ,且未设置pad ,在遇到输出为非整数情况 ,向上取整 ,即在右边和下边补1
-    if h > int(h) and layer.convolution_param.pad == []:
-        output_shape_h = int(h)
-        #layer.convolution_param.pad= pads
-    else:
-        output_shape_h = int(h)
-    output_shape = [[input_shape[0][0],kernel_num,output_shape_h,int(w)]]
+    def get_output_shape(i, k, p, s):
+        return (i-1)*s + k -2*p
+
+    h = get_output_shape(input_shape[0][2], kernel_shape[0], pads[0], strides[0])
+    w = get_output_shape(input_shape[0][3], kernel_shape[1], pads[1], strides[1])
+
+    output_shape = [[input_shape[0][0], kernel_num, h, w]]
 
     return output_shape
 #构建节点
-def createConv(layer, nodename, inname, outname, input_shape):
-    dict = getConvAttri(layer)
-    output_shape = getConvOutShape(input_shape, layer, dict)
+def createConvTranspose(layer, nodename, inname, outname, input_shape):
+    dict = getConvTransposeAttri(layer)
+    output_shape = getConvTransposeOutShape(input_shape, layer, dict)
     #构建node
-    node = Node.c2oNode(layer, nodename, "Conv", inname, outname, input_shape, output_shape, dict)
+    node = Node.c2oNode(layer, nodename, "ConvTranspose", inname, outname, input_shape, output_shape, dict)
     print(nodename, "节点构建完成")
     return node
-
